@@ -2,8 +2,11 @@ package org.dsi.com.userService.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.dsi.com.userService.dto.RoleDto;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -23,6 +26,9 @@ public class User {
     @Column (unique = true)
     private String email;
     private String password;
-    private LocalDateTime lastLoginDate;
+    private Date lastLoginDate;
+    private Date createdDate;
+    private Date lastModifiedDate;
     private Boolean isDeleted;
+
 }
