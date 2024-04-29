@@ -6,6 +6,7 @@ import org.dsi.com.userService.dto.FeatureRequestDto;
 import org.dsi.com.userService.model.Feature;
 import org.dsi.com.userService.repository.FeatureRepository;
 import org.dsi.com.userService.service.FeatureService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,8 +32,13 @@ public class FeatureServiceImpl implements FeatureService {
      * @return
      */
     @Override
-    public Feature getFeatureById(Long Id) {
-       return featureRepository.findById(Id).get();
+    public ResponseEntity<?> getFeatureById(Long Id) {
+        Optional<Feature>  feature =featureRepository.findById(Id);
+        if(feature.isPresent()){
+            return ResponseEntity.ok(feature.get());
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**

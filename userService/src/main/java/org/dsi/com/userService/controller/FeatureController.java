@@ -33,8 +33,8 @@ public class FeatureController {
     }
     @GetMapping(value = "/{featureId}", name = "get single features api")
     @ResponseStatus(HttpStatus.OK)
-    public HttpResponse<?> getSingleFeature(@PathVariable Long featureId){
-         return (HttpResponse<?>) featureService.getFeatureById(featureId);
+    public ResponseEntity<?> getSingleFeature(@PathVariable Long featureId){
+         return  featureService.getFeatureById(featureId);
     }
 
 }
