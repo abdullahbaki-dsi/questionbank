@@ -1,10 +1,7 @@
 package org.dsi.com.questionService.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ValueGenerationType;
 
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 
 public class Question {
 
@@ -25,11 +23,11 @@ public class Question {
     private Long categoryID;
     private Long submittedByUserID;
     private int difficultyLevel;
-    private String question;
+    private String questionStatement;
     private String sampleInput;
     private String sampleOutput;
-    private String Constraints;
+    private String constraints;
     private Boolean isDeleted;
-    private LocalDateTime submittedDate;
-    private LocalDateTime approvedDate;
+    private Date submittedDate;
+    private Date approvedDate;
 }

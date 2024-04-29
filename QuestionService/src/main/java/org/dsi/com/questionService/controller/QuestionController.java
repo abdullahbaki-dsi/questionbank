@@ -2,11 +2,11 @@ package org.dsi.com.questionService.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dsi.com.questionService.dto.QuestionRequest;
+import org.dsi.com.questionService.dto.QuestionRequestDto;
 import org.dsi.com.questionService.model.Question;
 import org.dsi.com.questionService.service.QuestionService;
-import org.springframework.boot.actuate.web.exchanges.HttpExchange;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,11 +25,26 @@ public class QuestionController {
         return questionService.getAllQuestions();
     }
 
-    @PostMapping (value = "/" , name= "creare Question")
+    @PostMapping (value = "/" , name= "create Question")
     @ResponseStatus (HttpStatus.CREATED)
-    public Question create(){
-        return questionService.SaveQuestion(new QuestionRequest());
-//        return ResponseStatus
+    public Question create(@RequestBody QuestionRequestDto questionRequest){
+        return questionService.SaveQuestion(questionRequest);
+    }
+
+    @GetMapping(value = "/{questionId}", name = "getQuestionApi")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> getQuestion(@PathVariable Long questionId){
+        log.info("inside get single question");
+
+        return questionService.getQuestionById(questionId);
+    }
+    @PutMapping(value = "/{questionId}", name = "getQuestionApi")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> getQuestion(@PathVariable Long questionId,
+                                         @RequestBody Question question){
+        log.info("inside get single question");
+
+        return questionService.getQuestionById(questionId);
     }
 
 }
