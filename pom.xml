@@ -21,6 +21,7 @@
         <module>approvalService</module>
         <module>discoveryServer</module>
         <module>apiGateway</module>
+        <module>notificationService</module>
     </modules>
 
     <properties>

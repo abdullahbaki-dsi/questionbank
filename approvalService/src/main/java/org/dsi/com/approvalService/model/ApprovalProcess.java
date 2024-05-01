@@ -11,18 +11,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="approval_steps")
-public class ApprovalStep {
+@Table(name="approval_process")
+public class ApprovalProcess {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue (strategy = GenerationType.SEQUENCE)
     private Long Id;
+    private String name;
     /**
-     * approvalProcess foreign key
+     * user foreign key
      */
-    private Long approvalProcessId;
-    private String stepName;
-    private String previousStep;
-    private String nextStep;
-    private int serial;
+    private String CreatedByUserId;
     private boolean isDeleted;
 }

@@ -1,15 +1,14 @@
 package org.dsi.com.approvalService.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.dsi.com.approvalService.event.PendingApprovalEvent;
 
-@Service
-@RequiredArgsConstructor
+import java.util.UUID;
 
-public class ApprovalService {
+public interface ApprovalService {
 
-    private final WebClient.Builder webClientBuilder;
-
+    /**
+     * this will send a event to generate a mail to let user know they have new question to approve
+     */
+    public void generatePendingApprovalEvent();
 
 }
