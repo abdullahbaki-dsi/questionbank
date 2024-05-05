@@ -13,7 +13,8 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "question_approvals")
+@Table(name = "question_approvals"
+    , uniqueConstraints = {@UniqueConstraint(columnNames = {"questionId", "approvalStepId","approvedStatus"})})
 public class QuestionApprovals {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -34,10 +35,6 @@ public class QuestionApprovals {
      * approver User's group fk
      */
     private  Long approverGroupId;
-    /**
-     * approver user's role Id fk
-     */
-    private  Long rolesId;
     /**
      * Approval status
      * 0 -> rejected

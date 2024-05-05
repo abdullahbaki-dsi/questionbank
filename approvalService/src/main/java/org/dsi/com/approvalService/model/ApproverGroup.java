@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="approver_group")
+@Table(name="approver_group",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"approvalStepId", "rolesId"})})
 public class ApproverGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -24,4 +25,5 @@ public class ApproverGroup {
      * roles foreign key
      */
     private Long rolesId;
+    private Boolean isDeleted;
 }

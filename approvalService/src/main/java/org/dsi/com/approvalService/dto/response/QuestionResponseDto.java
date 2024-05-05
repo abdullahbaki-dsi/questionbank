@@ -1,24 +1,13 @@
-package org.dsi.com.questionService.model;
+package org.dsi.com.approvalService.dto.response;
 
-import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ValueGenerationType;
 
-import java.time.LocalDateTime;
 import java.util.Date;
+@Data
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
+public class QuestionResponseDto {
 
-@Entity
-@Table(name="questions")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-
-public class Question {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private  Long id;
     private Long categoryID;
     private Long submittedByUserID;

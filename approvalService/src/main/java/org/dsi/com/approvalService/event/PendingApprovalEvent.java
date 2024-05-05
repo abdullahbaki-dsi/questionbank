@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 public class PendingApprovalEvent {
     private String questionID;
-//    private String assignedDate;
+    private String assignedDate;
 //    private String lastApprovedSteps;
 //    private String lastApprovedDate;
 }

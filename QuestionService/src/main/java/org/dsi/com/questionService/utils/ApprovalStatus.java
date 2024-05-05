@@ -1,4 +1,4 @@
-package org.dsi.com.approvalService.utils;
+package org.dsi.com.questionService.utils;
 public enum ApprovalStatus {
     REJECTED(0, "REJECTED"),
     APPROVED(1, "APPROVED"),

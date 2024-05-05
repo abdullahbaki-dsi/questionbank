@@ -2,6 +2,7 @@ package org.dsi.com.questionService.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dsi.com.questionService.dto.QuestionApprovalStatusDto;
 import org.dsi.com.questionService.dto.QuestionRequestDto;
 import org.dsi.com.questionService.model.Question;
 import org.dsi.com.questionService.service.QuestionService;
@@ -29,6 +30,14 @@ public class QuestionController {
     @ResponseStatus (HttpStatus.CREATED)
     public Question create(@RequestBody QuestionRequestDto questionRequest){
         return questionService.SaveQuestion(questionRequest);
+    }
+
+    @PostMapping (value = "/{questionId}/approve", name = "approveQuestionApi")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> approveQuestion(@PathVariable Long questionId,
+                                             @RequestBody QuestionApprovalStatusDto questionApprovalStatusDto){
+        log.info("inside approve question");
+        return questionService.updateStatus(questionId, questionApprovalStatusDto);
     }
 
     @GetMapping(value = "/{questionId}", name = "getQuestionApi")

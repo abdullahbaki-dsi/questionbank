@@ -22,6 +22,7 @@
         <module>discoveryServer</module>
         <module>apiGateway</module>
         <module>notificationService</module>
+        <module>configService</module>
     </modules>
 
     <properties>

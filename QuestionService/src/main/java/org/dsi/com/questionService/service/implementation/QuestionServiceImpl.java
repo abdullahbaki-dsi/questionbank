@@ -1,10 +1,12 @@
 package org.dsi.com.questionService.service.implementation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dsi.com.questionService.dto.QuestionApprovalStatusDto;
 import org.dsi.com.questionService.dto.QuestionRequestDto;
 import org.dsi.com.questionService.model.Question;
 import org.dsi.com.questionService.repository.QuestionRepository;
 import org.dsi.com.questionService.service.QuestionService;
+import org.dsi.com.questionService.utils.ApprovalStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,7 @@ public class QuestionServiceImpl implements QuestionService {
         builder.sampleOutput(questionRequest.getSampleOutput());
         builder.submittedDate(new Date());
         builder.isDeleted(false);
+        builder.approvalStatus(ApprovalStatus.PENDING.getCode());
         Question question = builder.build();
         return questionRepository.save(question);
     }
@@ -36,6 +39,20 @@ public class QuestionServiceImpl implements QuestionService {
 
     public List<Question> getAllQuestions() {
         return questionRepository.findAll();
+    }
+
+    @Override
+    public ResponseEntity<?> updateStatus(Long questionId, QuestionApprovalStatusDto questionApprovalStatusDto) {
+        Optional<Question> questionOptional = questionRepository.findById(questionId);
+        if (questionOptional.isPresent()) {
+            Question question = questionOptional.get();
+            question.setApprovedDate(new Date());
+            question.setApprovalStatus(ApprovalStatus.getCode(questionApprovalStatusDto.getStatus()));
+            questionRepository.save(question);
+            return ResponseEntity.ok(question);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     public ResponseEntity<?> getQuestionById(Long questionId) {
