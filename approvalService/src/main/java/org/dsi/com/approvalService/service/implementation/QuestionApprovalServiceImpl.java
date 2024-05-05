@@ -197,6 +197,15 @@ public class QuestionApprovalServiceImpl implements QuestionApprovalService {
         }
         return  approverGroupListWithPermissionToApprove;
     }
+    /**
+     * This method validates the ApproverGroup based on the provided QuestionApprovalDto.
+     * It checks if the ApproverGroup, identified by the ApproverGroupId in the QuestionApprovalDto, exists and is not deleted.
+     *
+     * @param questionApprovalDto The QuestionApprovalDto object containing the details of the approval.
+     * @return An Optional<ApproverGroup> object. If the ApproverGroup exists and is not deleted, it is returned.
+     *         If the ApproverGroup does not exist or is deleted, an empty Optional is returned.
+     * @throws BadRequestException if the ApproverGroup does not exist or is deleted.
+    */
 
     private Optional<ApproverGroup> validateApproverGroup(QuestionApprovalDto questionApprovalDto) {
         Optional<ApproverGroup> approverGroupInRequestOptional
