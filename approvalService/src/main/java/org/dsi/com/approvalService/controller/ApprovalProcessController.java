@@ -1,11 +1,8 @@
 package org.dsi.com.approvalService.controller;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dsi.com.approvalService.dto.ApprovalProcessRequestDto;
-import org.dsi.com.approvalService.dto.FeedbackDto;
 import org.dsi.com.approvalService.model.ApprovalProcess;
-import org.dsi.com.approvalService.model.Feedback;
 import org.dsi.com.approvalService.service.ApprovalProcessService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/approval/process")
 public class ApprovalProcessController {
     final ApprovalProcessService approvalProcessService;
+
+    public ApprovalProcessController(ApprovalProcessService approvalProcessService) {
+        this.approvalProcessService = approvalProcessService;
+    }
+
     @GetMapping(value = "/", name = "get approval process Api")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> findAllApprovalProcess(){

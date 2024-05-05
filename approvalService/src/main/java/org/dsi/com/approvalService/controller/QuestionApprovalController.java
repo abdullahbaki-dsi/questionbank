@@ -1,5 +1,7 @@
 package org.dsi.com.approvalService.controller;
 
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.dsi.com.approvalService.dto.QuestionApprovalDto;
@@ -44,6 +46,8 @@ public class QuestionApprovalController {
     }
 
     @PostMapping (value = "/{questionID}", name="create approval for a question id")
+    @TimeLimiter(name = "approval")
+    @Retry(name="approval")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createApprovalForQuestion(@PathVariable Long questionID,
                                                        @RequestBody QuestionApprovalDto questionApprovalDto) {

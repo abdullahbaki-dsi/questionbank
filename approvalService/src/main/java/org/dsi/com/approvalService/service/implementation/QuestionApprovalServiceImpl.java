@@ -8,7 +8,6 @@ import org.dsi.com.approvalService.dto.response.RoleResponseDto;
 import org.dsi.com.approvalService.dto.response.UserResponseDto;
 import org.dsi.com.approvalService.model.ApprovalStep;
 import org.dsi.com.approvalService.model.ApproverGroup;
-import org.dsi.com.approvalService.model.CategoryApprovalProcess;
 import org.dsi.com.approvalService.model.QuestionApprovals;
 import org.dsi.com.approvalService.repository.QuestionApprovalRepository;
 import org.dsi.com.approvalService.service.*;
@@ -49,8 +48,10 @@ public class QuestionApprovalServiceImpl implements QuestionApprovalService {
     }
 
     /**
-     * @param questionID
-     * @return
+     * This method is used to find all QuestionApprovals by a specific question ID.
+     *
+     * @param questionID The ID of the question for which the approvals are to be found.
+     * @return A list of QuestionApprovals associated with the given question ID.
      */
     @Override
     public List<QuestionApprovals> findByQuestionId(Long questionID) {
@@ -58,8 +59,8 @@ public class QuestionApprovalServiceImpl implements QuestionApprovalService {
     }
 
     /**
-     * @param questionID
-     * @param questionApprovalDto
+     * @param questionID question id
+     * @param questionApprovalDto payload for question approval
      * @return new QuestionApprovals
      * @implSpec create approval for question, check if the user is authorized to approve the question
      */
@@ -125,7 +126,6 @@ public class QuestionApprovalServiceImpl implements QuestionApprovalService {
      * @return A Boolean value indicating whether the current approval step is the last step in the approval process.
      */
     private Boolean checkIfThisIsTheLastStep(QuestionApprovals questionApprovals) {
-        //TODO:// get the last step
         Optional<QuestionResponseDto> questionResponseDtoOptional= questionService.findById(questionApprovals.getQuestionId());
         if(questionResponseDtoOptional.isEmpty()){
             log.error("Question not found can not check last step");
@@ -141,7 +141,7 @@ public class QuestionApprovalServiceImpl implements QuestionApprovalService {
         if( (steps.get(steps.size()-1)).getId() == questionApprovals.getApprovalStepId()){
             log.info("this is the last step {}", questionApprovals.getApprovalStepId());
             return true;
-        };
+        }
 
         return false;
 

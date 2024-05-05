@@ -1,22 +1,22 @@
 package org.dsi.com.approvalService.controller;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dsi.com.approvalService.dto.FeedbackDto;
 import org.dsi.com.approvalService.model.Feedback;
-import org.dsi.com.approvalService.repository.FeedbackRepository;
 import org.dsi.com.approvalService.service.FeedbackService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/feedback")
 public class FeedbackController {
     final FeedbackService feedbackService;
+
+    public FeedbackController(FeedbackService feedbackService) {
+        this.feedbackService = feedbackService;
+    }
 
     @GetMapping(value = "/", name = "get feedback Api")
     @ResponseStatus(HttpStatus.OK)
