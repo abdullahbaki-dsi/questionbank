@@ -1,43 +1,51 @@
 spring:
   application:
     name: apigateway
-  cloud:
-    gateway:
-      routes:
-        - id: question-service
-          uri: lb://question-service
-          predicates:
-            - Path=/question-service/**
-        - id: user-service
-          uri: lb://user-service
-          predicates:
-            - Path=/user-service/**
-        - id: approval-service
-          uri: lb://approval-service
-          predicates:
-            - Path=/approval-service/**
-        - id: discovery-server
-          uri: http://localhost:8761
-          predicates:
-            - Path=/eureka/web
-          filters:
-            - SetPath=/
-        - id: discovery-server-static
-          uri: http://localhost:8761
-          predicates:
-            - Path=/eureka/**
-
+jwt:
+  secret: zdinH6NsYMgZiQcoIAO8QDdBxOawWMrAYLmiHrw4jCM=
+  expiration: 86400000
 server:
   port: 8080
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
-logging:
-  level:
-    root: INFO
-    org.springframework.cloud.gateway: TRACE
+#logging:
+#  level:
+#    root: INFO
+#    org.springframework.cloud.gateway: TRACE
+
 
 
 #configure user service
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: question-service
+#          uri: lb://question-service
+#          predicates:
+#            - Path=/question-service/**
+#          filters:
+#            -AuthenticationFilter
+#        - id: user-service
+#          uri: lb://user-service
+#          predicates:
+#            - Path=/user-service/**
+#          filters:
+#            - AuthenticationFilter
+#        - id: approval-service
+#          uri: lb://approval-service
+#          predicates:
+#            - Path=/approval-service/**
+#        - id: discovery-server
+#          uri: http://localhost:8761
+#          predicates:
+#            - Path=/eureka/web
+#          filters:
+#            - SetPath=/
+#        - id: discovery-server-static
+#          uri: http://localhost:8761
+#          predicates:
+#            - Path=/eureka/**
+
 

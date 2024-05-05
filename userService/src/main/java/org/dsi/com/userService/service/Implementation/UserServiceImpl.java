@@ -2,10 +2,11 @@ package org.dsi.com.userService.service.Implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dsi.com.userService.dto.request.LoginRequestDto;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.dsi.com.userService.dto.RoleDto;
 import org.dsi.com.userService.dto.UserCreateDto;
 import org.dsi.com.userService.dto.UserResponseDto;
-import org.dsi.com.userService.model.Role;
 import org.dsi.com.userService.model.User;
 import org.dsi.com.userService.model.UserRoles;
 import org.dsi.com.userService.repository.UserRepository;
@@ -14,11 +15,12 @@ import org.dsi.com.userService.service.UserRoleService;
 import org.dsi.com.userService.service.UserService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Stream;
+
 
 @RequiredArgsConstructor
 @Service
@@ -34,7 +36,7 @@ public class UserServiceImpl implements UserService {
                 .lastName(userCreateDto.getLastName())
                 .email(userCreateDto.getEmail())
                 .userName(userCreateDto.getUserName())
-                .password(userCreateDto.getPassword())
+                .password(BCrypt.hashpw(userCreateDto.getPassword(), BCrypt.gensalt()))
                 .createdDate(new Date())
                 .lastModifiedDate(new Date())
                 .build();
@@ -42,13 +44,14 @@ public class UserServiceImpl implements UserService {
             user = userRepository.save(user);
         }
         catch (DataIntegrityViolationException ex) {
+            log.error("Error while saving user", ex);
             throw  ex;
         }
         return  mapToUserResponseDto(user);
     }
 
     /**
-     * @return 
+     * @return list of users
      */
     @Override
     public List<UserResponseDto> getAllUsers() {
@@ -59,14 +62,30 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * @param userID 
-     * @return
+     * @param userID user id to fetch user by
+     * @return user response
      */
     @Override
     public UserResponseDto getUserByUserID(Long userID) {
         Optional<User> user = userRepository.findById(userID);
-            return  mapToUserResponseDto(user.get());
+        if(user.isEmpty()) throw new NoSuchElementException("User not found");
+        return mapToUserResponseDto(user.get());
 
+    }
+
+    /**
+     * @param loginRequestDto login request dto with username and password
+     * @return jwt token
+     */
+    @Override
+    public UserResponseDto loginUser(LoginRequestDto loginRequestDto) {
+        Optional<User> user = userRepository.findByUserName(loginRequestDto.getUserName());
+        if(user.isPresent() && BCrypt.checkpw(loginRequestDto.getPassword(), user.get().getPassword())){
+            return mapToUserResponseDto(user.get());
+        }
+        else{
+            throw new DataIntegrityViolationException("Username/Password Incorrect");
+        }
     }
 
     private UserResponseDto mapToUserResponseDto(User user) {
