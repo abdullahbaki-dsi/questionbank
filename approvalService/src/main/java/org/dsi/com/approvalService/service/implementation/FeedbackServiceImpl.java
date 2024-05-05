@@ -1,6 +1,5 @@
 package org.dsi.com.approvalService.service.implementation;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dsi.com.approvalService.dto.FeedbackDto;
 import org.dsi.com.approvalService.model.Feedback;
@@ -12,13 +11,16 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+
 public class FeedbackServiceImpl implements FeedbackService {
     final FeedbackRepository feedbackRepository;
+
+    public FeedbackServiceImpl(FeedbackRepository feedbackRepository) {
+        this.feedbackRepository = feedbackRepository;
+    }
 
     /**
      * @param questionId

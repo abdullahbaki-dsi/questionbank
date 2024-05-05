@@ -1,6 +1,5 @@
 package org.dsi.com.approvalService.service.implementation;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dsi.com.approvalService.dto.ApprovalProcessRequestDto;
 import org.dsi.com.approvalService.model.ApprovalProcess;
@@ -14,9 +13,12 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class ApprovalProcessServiceImpl implements ApprovalProcessService {
     final ApprovalProcessRepository approvalProcessRepository;
+
+    public ApprovalProcessServiceImpl(ApprovalProcessRepository approvalProcessRepository) {
+        this.approvalProcessRepository = approvalProcessRepository;
+    }
 
     /**
      * @return 
