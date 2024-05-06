@@ -112,4 +112,4 @@ this handles the auth check and routes the request to the respective service.
 3. Adding Retry using Resilience4j
 4. Adding Circuit Breaker using Resilience4j
 5. Adding distributed tracing using Zipkin
-6. 
+6. change all to deploy through docker using jib(currtenly do not support for java21) then move to k82
