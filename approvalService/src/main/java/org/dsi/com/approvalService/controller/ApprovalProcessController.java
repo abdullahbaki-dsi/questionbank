@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @Slf4j
 @RequestMapping("/api/v1/approval/process")
@@ -21,12 +24,20 @@ public class ApprovalProcessController {
     @GetMapping(value = "/", name = "get approval process Api")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> findAllApprovalProcess(){
-        return  approvalProcessService.finaAll();
+        List<ApprovalProcess> approvalProcessList = approvalProcessService.finaAll();
+        if(approvalProcessList.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(approvalProcessList);
     }
-    @GetMapping(value = "/{approvalProcessId}", name = "get approval process Api")
+    @GetMapping(value = "/{approvalProcessId}", name = "get approval process Api  by id")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> findAllApprovalProcessById(@PathVariable Long approvalProcessId){
-        return  approvalProcessService.findById(approvalProcessId);
+        Optional<ApprovalProcess> approvalProcessOptional = approvalProcessService.findById(approvalProcessId);
+        if (approvalProcessOptional.isPresent()){
+            return ResponseEntity.ok().body(approvalProcessOptional.get());
+        }
+        return ResponseEntity.noContent().build();
     }
     @PostMapping(value = "/", name = "create approval Process")
     @ResponseStatus (HttpStatus.CREATED)

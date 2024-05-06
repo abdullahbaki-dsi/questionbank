@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.dsi.com.approvalService.dto.ApprovalProcessResponseDto;
 import org.dsi.com.approvalService.dto.CategoryApprovalProcessDto;
 import org.dsi.com.approvalService.dto.CategoryApprovalProcessResponseDto;
+import org.dsi.com.approvalService.dto.Request.CategoryApprovalProcessStatusUpdateDto;
 import org.dsi.com.approvalService.model.ApprovalProcess;
 import org.dsi.com.approvalService.model.CategoryApprovalProcess;
 import org.dsi.com.approvalService.repository.CategoryApprovalProcessRepository;
@@ -101,6 +102,54 @@ public class CategoryApprovalProcessServiceImpl implements CategoryApprovalProce
     public Optional<CategoryApprovalProcess> findCategoryApprovalProcessByCategoryIdAndStatusActive(Long categoryId) {
         return  categoryApprovalProcessRepository.
                 findCategoryApprovalProcessByCategoryIdAndActivateStatusEqualsIgnoreCase(categoryId, Status.ACTIVE.getCode());
+    }
+
+    /**
+     * @param categoryProcessId  category approval process id to be updated
+     * @param categoryApprovalProcessStatusUpdateDto status update payload
+     * @return updated categoy approval process object
+     */
+    @Override
+    public Optional<CategoryApprovalProcess> activateCategoryApprovalProcess(Long categoryProcessId, CategoryApprovalProcessStatusUpdateDto categoryApprovalProcessStatusUpdateDto) {
+        Optional<CategoryApprovalProcess> categoryApprovalProcessOptional =
+                categoryApprovalProcessRepository.findById(categoryProcessId);
+        List <CategoryApprovalProcess> activatedProcess =
+                categoryApprovalProcessRepository.findCategoryApprovalProcessesByCategoryIdAndActivateStatusIgnoreCase(
+                        categoryApprovalProcessStatusUpdateDto.getCategoryId(), Status.ACTIVE.getCode());
+        if (!activatedProcess.isEmpty() &&
+                categoryApprovalProcessStatusUpdateDto.getActivateStatus().equalsIgnoreCase(Status.ACTIVE.getDescription())){
+            throw  new IllegalArgumentException("Category already has an active approval process");
+        }
+
+        if (categoryApprovalProcessOptional.isPresent()){
+            CategoryApprovalProcess categoryApprovalProcess = categoryApprovalProcessOptional.get();
+            log.info("obj c:{} ap:{}", categoryApprovalProcess.getCategoryId(),
+                    categoryApprovalProcessStatusUpdateDto.getCategoryId());
+            if(!categoryApprovalProcess.getCategoryId().equals(categoryApprovalProcessStatusUpdateDto.getCategoryId())){
+                log.info("category id does not match with the payload");
+                return Optional.empty();
+            }
+            if (!categoryApprovalProcess.getApprovalProcessId().equals(categoryApprovalProcessStatusUpdateDto.getApprovalProcessId())){
+                log.info("approval process id does not match with the payload");
+                return Optional.empty();
+            }
+            categoryApprovalProcess.setActivateStatus(Status.getCode(categoryApprovalProcessStatusUpdateDto
+                                                                                            .getActivateStatus()));
+            return Optional.of(categoryApprovalProcessRepository.save(categoryApprovalProcess));
+        } else {
+            log.info("no approval process found with the id: {}",
+                    categoryProcessId);
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * @param categoryApprovalProcessId 
+     * @return
+     */
+    @Override
+    public Optional<CategoryApprovalProcess> findByID(Long categoryApprovalProcessId) {
+        return categoryApprovalProcessRepository.findById(categoryApprovalProcessId);
     }
 
 

@@ -24,13 +24,8 @@ public class CategoryServiceImpl implements CategoryService {
      * @return
      */
     @Override
-    public ResponseEntity<?> getCategoryById(Long categoryId) {
-        Optional<Category> categoryOptional= categoryRepository.findById(categoryId);
-        if( categoryOptional.isPresent()){
-            return  ResponseEntity.ok().body(categoryOptional.get());
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+    public Optional<Category> getCategoryById(Long categoryId) {
+        return categoryRepository.findById(categoryId);
     }
 
     /**

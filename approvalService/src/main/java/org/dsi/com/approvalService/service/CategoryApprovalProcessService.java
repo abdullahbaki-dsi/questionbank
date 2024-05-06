@@ -1,6 +1,7 @@
 package org.dsi.com.approvalService.service;
 
 import org.dsi.com.approvalService.dto.CategoryApprovalProcessDto;
+import org.dsi.com.approvalService.dto.Request.CategoryApprovalProcessStatusUpdateDto;
 import org.dsi.com.approvalService.model.CategoryApprovalProcess;
 import org.springframework.http.ResponseEntity;
 
@@ -23,4 +24,7 @@ public interface CategoryApprovalProcessService {
 
     Optional<CategoryApprovalProcess> findCategoryApprovalProcessByCategoryIdAndStatusActive(Long categoryId);
 
+    Optional<CategoryApprovalProcess> activateCategoryApprovalProcess(Long categoryProcessId, CategoryApprovalProcessStatusUpdateDto categoryApprovalProcessStatusUpdateDto);
+
+    Optional<CategoryApprovalProcess> findByID(Long categoryApprovalProcessId);
 }

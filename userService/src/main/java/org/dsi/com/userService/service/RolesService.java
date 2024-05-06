@@ -16,4 +16,6 @@ public interface RolesService {
     RoleDto createRole(RoleRequestDto roleRequestDto);
 
     UserRoles createUserRole(UserRoleDto userRoleDto);
+
+    RoleDto activateRole(Long roleID);
 }

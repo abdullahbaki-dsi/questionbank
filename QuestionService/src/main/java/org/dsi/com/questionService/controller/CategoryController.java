@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/category")
@@ -34,7 +35,11 @@ public class CategoryController {
     @GetMapping(value = "/{categoryId}", name = "get Category by Id Api")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getCategoryById(@PathVariable Long categoryId){
-        return categoryService.getCategoryById(categoryId);
+        Optional<Category> categoryOptional= categoryService.getCategoryById(categoryId);
+        if(categoryOptional.isPresent()){
+            return ResponseEntity.ok().body(categoryOptional.get());
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Category Not Found");
     }
 
 

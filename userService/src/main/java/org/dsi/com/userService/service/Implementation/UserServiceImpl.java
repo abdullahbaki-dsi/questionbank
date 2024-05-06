@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
                 .password(BCrypt.hashpw(userCreateDto.getPassword(), BCrypt.gensalt()))
                 .createdDate(new Date())
                 .lastModifiedDate(new Date())
+                .isDeleted(Boolean.FALSE)
                 .build();
         try {
             user = userRepository.save(user);

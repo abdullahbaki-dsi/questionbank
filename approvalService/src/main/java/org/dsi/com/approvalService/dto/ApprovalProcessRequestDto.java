@@ -8,5 +8,5 @@ import lombok.*;
 @Builder
 public class ApprovalProcessRequestDto {
     private String name;
-    private String CreatedByUserId;
+    private Long CreatedByUserId;
 }

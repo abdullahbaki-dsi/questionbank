@@ -1,8 +1,8 @@
 package org.dsi.com.questionService.utils;
 public enum ApprovalStatus {
-    REJECTED(0, "REJECTED"),
-    APPROVED(1, "APPROVED"),
-    PENDING(2, "PENDING"),
+    PENDING(0, "PENDING"),
+    REJECTED(1, "REJECTED"),
+    APPROVED(2, "APPROVED"),
     REQUEST_CLARITY(3, "REQUEST_CLARITY");
 
     private int code;

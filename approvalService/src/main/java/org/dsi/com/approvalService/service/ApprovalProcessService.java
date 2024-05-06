@@ -4,13 +4,14 @@ import org.dsi.com.approvalService.dto.ApprovalProcessRequestDto;
 import org.dsi.com.approvalService.model.ApprovalProcess;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ApprovalProcessService {
-    ResponseEntity<?> finaAll();
+    List<ApprovalProcess> finaAll();
 
     ApprovalProcess save(ApprovalProcessRequestDto approvalProcessRequestDto);
 
-    ResponseEntity<?> findById(Long approvalProcessId);
+    Optional <ApprovalProcess> findById(Long approvalProcessId);
     Optional<ApprovalProcess> findApprovalByID(Long approvalProcessId);
 }

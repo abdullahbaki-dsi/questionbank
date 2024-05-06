@@ -24,13 +24,10 @@ public class ApprovalProcessServiceImpl implements ApprovalProcessService {
      * @return 
      */
     @Override
-    public ResponseEntity<?> finaAll() {
-        List<ApprovalProcess> approvalProcesses =approvalProcessRepository.findAll().stream().toList();
+    public List<ApprovalProcess> finaAll() {
+         return approvalProcessRepository.findAll().stream().toList();
 
-        if(approvalProcesses.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(approvalProcesses);
+
     }
 
     /**
@@ -51,13 +48,8 @@ public class ApprovalProcessServiceImpl implements ApprovalProcessService {
      * @return
      */
     @Override
-    public ResponseEntity<?> findById(Long approvalProcessId) {
-       Optional<ApprovalProcess> approvalProcessOptional =
-               approvalProcessRepository.findById(approvalProcessId);
-       if(approvalProcessOptional.isPresent()){
-           return ResponseEntity.ok().body(approvalProcessOptional.get());
-       }
-       return ResponseEntity.noContent().build();
+    public Optional<ApprovalProcess> findById(Long approvalProcessId) {
+       return approvalProcessRepository.findById(approvalProcessId);
     }
 
     /**

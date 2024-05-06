@@ -53,7 +53,7 @@ public class RoleServiceImpl implements RolesService {
     public RoleDto createRole(RoleRequestDto roleRequestDto) {
         Role.RoleBuilder builder = Role.builder();
         builder.name(roleRequestDto.getName());
-        builder.status(Status.DRAFT.getName());
+        builder.status(Status.DRAFT.getCode());
         Role role = builder.build();
         rolesRepository.save(role);
         return  mapToRoleDto(role);
@@ -65,11 +65,31 @@ public class RoleServiceImpl implements RolesService {
      */
     @Override
     public UserRoles createUserRole(UserRoleDto userRoleDto) {
+
+
         UserRoles.UserRolesBuilder builder = UserRoles.builder();
         builder.userId(userRoleDto.getUserId());
         builder.roleId(userRoleDto.getRoleId());
         UserRoles userRoles = builder.build();
         return userRolesRepository.save(userRoles);
+    }
+
+    /**
+     * @param roleID 
+     * @return
+     */
+    @Override
+    public RoleDto activateRole(Long roleID) {
+        Optional<Role> roleOptional = rolesRepository.findById(roleID);
+        if(roleOptional.isPresent()){
+            Role role = roleOptional.get();
+            role.setStatus(Status.ACTIVE.getCode());
+            rolesRepository.save(role);
+            return mapToRoleDto(role);
+        }
+        else{
+            throw new RuntimeException("Role Id Not Found "+ roleID);
+        }
     }
 
     public List<UserRoles> getUserRolesByUserId(Long userId)
@@ -81,7 +101,7 @@ public class RoleServiceImpl implements RolesService {
         return RoleDto.builder()
                 .roleId(role.getId())
                 .name(role.getName())
-                .status(Status.getDesc(role.getStatus()))
+                .status(Status.getDescription(role.getStatus()))
                 .build();
     }
 }

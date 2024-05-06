@@ -20,6 +20,6 @@ public class ApprovalProcess {
     /**
      * user foreign key
      */
-    private String CreatedByUserId;
+    private Long CreatedByUserId;
     private boolean isDeleted;
 }

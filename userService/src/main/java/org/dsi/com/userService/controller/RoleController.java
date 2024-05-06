@@ -44,7 +44,7 @@ public class RoleController {
     @GetMapping(value = "/user", name="A user all Role")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> getRolesByUserId(@QueryParam("userId") Long userId){
-        return (ResponseEntity<?>) userRoleService.getUserRolesByUserID(userId);
+        return ResponseEntity.ok().body(userRoleService.getUserRolesByUserID(userId));
     }
 
     @GetMapping(value = "/{roleID}", name=" get single Role")
@@ -58,6 +58,13 @@ public class RoleController {
     public UserRoles addRolesToAUser(@RequestBody UserRoleDto userRoleDto) {
         return  rolesService.createUserRole(userRoleDto);
     }
+
+    @PostMapping(value = "/{roleID}/activate", name=" get single Role")
+    @ResponseStatus(HttpStatus.OK)
+    public RoleDto activate(@PathVariable Long roleID){
+        return rolesService.activateRole(roleID);
+    }
+
 
 
 
