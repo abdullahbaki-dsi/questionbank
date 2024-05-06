@@ -1,4 +1,4 @@
-FROM amazoncorretto:11
+FROM amazoncorretto:21
 
 EXPOSE 8080
 

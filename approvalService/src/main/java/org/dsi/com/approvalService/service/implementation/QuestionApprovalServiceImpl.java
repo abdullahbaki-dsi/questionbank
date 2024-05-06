@@ -67,9 +67,10 @@ public class QuestionApprovalServiceImpl implements QuestionApprovalService {
     @Override
     @Transactional
     public Optional<QuestionApprovals> createApprovalForQuestion(Long questionID,
-                                                                 QuestionApprovalDto questionApprovalDto) {
+                                                                 QuestionApprovalDto questionApprovalDto) throws Exception {
 
         //check if it's a valid group
+
         Optional<ApproverGroup> approverGroupOfPayloadOptional = validateApproverGroup(questionApprovalDto);
 
         // check if the group has permission to approve
@@ -101,6 +102,7 @@ public class QuestionApprovalServiceImpl implements QuestionApprovalService {
 
         //check if this is the last step and update the question status
         if (ApprovalStatus.REJECTED.getCode() == questionApproval.getStatusCode()) {
+            log.info("Question is rejected updating question status");
             approvalService.updateQuestionStatus(questionApproval);
 
         }
@@ -133,7 +135,7 @@ public class QuestionApprovalServiceImpl implements QuestionApprovalService {
         }
         Long categoryId = questionResponseDtoOptional.get().getCategoryID();
 
-        List<ApprovalStep> steps= approvalStepService.findByCategoryIdAndActivateStatus(categoryId, Status.ACTIVE.getCode());
+        List<ApprovalStep> steps= approvalStepService.findByCategoryIdAndActivateStatus(categoryId, Status.ACTIVE.getDescription());
         if (steps.isEmpty()) {
             log.error("No active approval steps found for category id: {}", categoryId);
             return false;
@@ -161,7 +163,8 @@ public class QuestionApprovalServiceImpl implements QuestionApprovalService {
                         .stream()
                         .map(RoleResponseDto::getRoleId)
                         .toList();
-
+        log.info("user roles: {}", usersRoleList);
+        log.info(" grup {}" ,approverGroupsWithPermission.stream().toList());
         return approverGroupsWithPermission
                 .stream()
                 .anyMatch(approverGroup -> usersRoleList.contains(approverGroup.getRolesId()));
@@ -177,6 +180,7 @@ public class QuestionApprovalServiceImpl implements QuestionApprovalService {
     private List<ApproverGroup> validateApproverGroupPermission(QuestionApprovalDto questionApprovalDto,
                                                                 Optional<ApproverGroup> approverGroupOfPayloadOptional)
     {
+        log.info("here");
         List<ApproverGroup> approverGroupListWithPermissionToApprove =
                 approverGroupService.getAllApproverGroupsByStepId(questionApprovalDto.getApprovalStepId());
 
@@ -192,7 +196,7 @@ public class QuestionApprovalServiceImpl implements QuestionApprovalService {
                                 .equals(approverGroupOfPayloadOptional.get().getId()));
 
         if (!approverGroupHasPermission) {
-            log.error("Approver Group in request does not have permission to approve");
+            log.error( "Approver Group in request does not have permission to approve");
             throw new BadRequestException("Approver Group in request does not have permission to approve");
         }
         return  approverGroupListWithPermissionToApprove;
@@ -207,7 +211,7 @@ public class QuestionApprovalServiceImpl implements QuestionApprovalService {
      * @throws BadRequestException if the ApproverGroup does not exist or is deleted.
     */
 
-    private Optional<ApproverGroup> validateApproverGroup(QuestionApprovalDto questionApprovalDto) {
+    private Optional<ApproverGroup> validateApproverGroup(QuestionApprovalDto questionApprovalDto) throws Exception {
         Optional<ApproverGroup> approverGroupInRequestOptional
                 = approverGroupService.getByIdAndNotDeleted(questionApprovalDto.getApproverGroupId());
 

@@ -11,6 +11,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class QuestionApprovalStatusDto {
-    private int status;
+    private String status;
     private Date approvedDate;
 }

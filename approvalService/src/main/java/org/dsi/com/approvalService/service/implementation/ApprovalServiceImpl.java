@@ -6,6 +6,7 @@ import org.dsi.com.approvalService.dto.Request.QuestionApprovalStatusDto;
 import org.dsi.com.approvalService.event.PendingApprovalEvent;
 import org.dsi.com.approvalService.model.QuestionApprovals;
 import org.dsi.com.approvalService.service.ApprovalService;
+import org.dsi.com.approvalService.utils.ApprovalStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -41,12 +42,12 @@ public class ApprovalServiceImpl implements ApprovalService {
     public void updateQuestionStatus(QuestionApprovals questionApprovals) {
         log.info("inside updateQuestionStatus");
         QuestionApprovalStatusDto.QuestionApprovalStatusDtoBuilder builder = QuestionApprovalStatusDto.builder();
-        builder.status(questionApprovals.getStatusCode());
+        builder.status(ApprovalStatus.getDescription(questionApprovals.getStatusCode()));
         builder.approvedDate(questionApprovals.getApprovedDate());
         QuestionApprovalStatusDto questionApprovalStatusDto = builder.build();
         try {
             webClientBuilder.build()
-                    .put()
+                    .post()
                     .uri("http://question-service/question-service/api/v1/question/" + questionApprovals.getQuestionId() + "/approve")
                     .bodyValue(questionApprovalStatusDto)
                     .retrieve()

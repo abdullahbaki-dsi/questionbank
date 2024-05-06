@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface QuestionApprovalService {
     List<QuestionApprovals> findByQuestionId(Long questionID);
 
-    Optional<QuestionApprovals> createApprovalForQuestion(Long questionID, QuestionApprovalDto questionApprovalDto);
+    Optional<QuestionApprovals> createApprovalForQuestion(Long questionID, QuestionApprovalDto questionApprovalDto) throws Exception;
 }

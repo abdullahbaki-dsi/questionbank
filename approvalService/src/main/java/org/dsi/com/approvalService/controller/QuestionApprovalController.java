@@ -40,20 +40,26 @@ public class QuestionApprovalController {
     public ResponseEntity<?> getApprovalByQuestionId(@PathVariable Long questionID) {
         List<QuestionApprovals> questionApprovals = questionApprovalService.findByQuestionId(questionID);
         if (questionApprovals.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Question approval not found");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Question approval not found");
         }
         return ResponseEntity.status(HttpStatus.OK).body(questionApprovals);
     }
 
     @PostMapping (value = "/{questionID}", name="create approval for a question id")
-    @TimeLimiter(name = "approval")
-    @Retry(name="approval")
+//    @TimeLimiter(name = "approval")
+//    @Retry(name="approval")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createApprovalForQuestion(@PathVariable Long questionID,
                                                        @RequestBody QuestionApprovalDto questionApprovalDto) {
-        Optional<QuestionApprovals> approvalOptional =
-                questionApprovalService.createApprovalForQuestion(questionID, questionApprovalDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Question approval created successfully");
+        try {
+            Optional<QuestionApprovals> approvalOptional =
+                    questionApprovalService.createApprovalForQuestion(questionID, questionApprovalDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Question approval created successfully");
+        }catch ( Exception er)
+        {
+            log.error("Error while creating approval for question", er);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while creating approval for question");
+        }
     }
 
     @GetMapping(value = "/test/{id}", name="update approval for a question id")
